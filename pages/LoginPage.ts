@@ -24,4 +24,8 @@ export class LoginPage {
     await this.passwordInput.fill(pass);
     await this.loginButton.click();
   }
+
+  async getErrorMessage() {
+    return await this.errorMessage.textContent()
+  }
 }
