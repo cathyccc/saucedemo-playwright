@@ -14,12 +14,12 @@ test.describe('Inventory Functionality', () => {
     await loginPage.login('standard_user', 'secret_sauce');
   });
 
-  test('should add a single item to the cart @smoke', async ({ page }) => {
+  test('should add a single item to the cart @smoke', async () => {
     await inventoryPage.addItemToCart("Sauce Labs Fleece Jacket");
     await expect(inventoryPage.cartBadge).toHaveText("1");
   });
 
-  test('should toggle button text after adding item @ui', async ({ page }) => {
+  test('should toggle button text after adding item @ui', async () => {
     const itemName = "Sauce Labs Fleece Jacket";
     await inventoryPage.addItemToCart(itemName);
 
@@ -27,7 +27,7 @@ test.describe('Inventory Functionality', () => {
     await expect(inventoryPage.getItemRemoveButton(itemName)).toHaveText("Remove");
   });
 
-  test('should decrease badge count when item is removed @regression', async ({ page }) => {
+  test('should decrease badge count when item is removed @regression', async () => {
     await inventoryPage.addItemToCart("Sauce Labs Backpack");
     await expect(inventoryPage.cartBadge).toHaveText("1");
     await inventoryPage.removeItemFromCart("Sauce Labs Backpack");
@@ -39,7 +39,7 @@ test.describe('Inventory Functionality', () => {
     await expect(page).toHaveURL(/inventory-item/);
   })
 
-  test("should sort items in alphabetical order @regression", async ({ page }) => {
+  test("should sort items in alphabetical order @regression", async () => {
     await inventoryPage.sortProductsBy('az');
     await expect(inventoryPage.activeSortLabel).toHaveText('Name (A to Z)');
     const itemNamesArr = await inventoryPage.allItemsNames();
@@ -47,7 +47,7 @@ test.describe('Inventory Functionality', () => {
     expect(itemNamesArr).toEqual(expectedOrder);
   });
 
-  test("should sort items by price: Low to High @regression", async ({ page }) => {
+  test("should sort items by price: Low to High @regression", async () => {
     await inventoryPage.sortProductsBy('lohi');
     await expect(inventoryPage.activeSortLabel).toHaveText('Price (low to high)');
     const itemPricesArr = await inventoryPage.allItemsPrices()
@@ -55,7 +55,7 @@ test.describe('Inventory Functionality', () => {
     expect(itemPricesArr).toEqual(expectedOrder)
   })
 
-  test("should sort items by price: High to Low @regression", async ({ page }) => {
+  test("should sort items by price: High to Low @regression", async () => {
     await inventoryPage.sortProductsBy('hilo');
     await expect(inventoryPage.activeSortLabel).toHaveText('Price (high to low)');
     const itemPricesArr = await inventoryPage.allItemsPrices()

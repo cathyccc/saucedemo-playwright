@@ -11,7 +11,6 @@ export class CartPage {
     this.productCard = page.getByTestId('inventory-item');
     this.checkoutBtn = page.getByTestId('checkout');
     this.continueShoppingBtn = page.getByTestId('continue-shopping');
-
   }
 
   async goto() {

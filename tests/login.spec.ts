@@ -16,13 +16,13 @@ test.describe('Login Page', () => {
     await expect(title).toHaveText('Products');
   })
 
-  test('an error message should show for user with incorrect credentials @regression', async ({ page }) => {
+  test('an error message should show for user with incorrect credentials @regression', async () => {
     await loginPage.login('standard_user', 'incorrectPW');
     await expect(loginPage.errorContainer).toBeVisible();
     await expect(loginPage.errorContainer).toContainText("Username and password do not match any user in this service")
   })
 
-  test('an error message should show for a locked out user @regression', async ({ page }) => {
+  test('an error message should show for a locked out user @regression', async () => {
     await loginPage.login('locked_out_user', 'secret_sauce');
     await expect(loginPage.errorContainer).toBeVisible();
     await expect(loginPage.errorContainer).toContainText("user has been locked out")
