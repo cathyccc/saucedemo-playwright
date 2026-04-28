@@ -15,24 +15,52 @@ export class InventoryPage {
     this.activeSortOption = page.locator('.active_option');
   }
 
+  async goto() {
+    await this.page.goto('/inventory.html');
+  }
+
+  getItemCard(productName: string) {
+    return this.productCard.filter({ hasText: productName });
+  }
+
+  getItemRemoveButton(productName: string) {
+    return this.getItemCard(productName).locator('button[data-test^="remove"]');
+  }
+
   async addItemToCart(productName: string) {
-    const card = this.productCard.filter({ hasText: productName });
-    const addButton = card.locator('button[data-test^="add-to-cart"]');
-    await addButton.click();
+    const card = this.getItemCard(productName);
+
+    if (await card.count() === 0) {
+      throw new Error(`Product "${productName}" is not found`)
+    }
+
+    await card.locator('button[data-test^="add-to-cart"]').click();
   }
 
   async removeItemFromCart(productName: string) {
-    const card = this.productCard.filter({ hasText: productName });
-    const removeButton = card.locator('button[data-test^="remove"]');
-    await removeButton.click();
+    const card = this.getItemCard(productName);
+
+    if (await card.count() === 0) {
+      throw new Error(`Product "${productName}" is not found`)
+    }
+    await card.locator('button[data-test^="remove"]').click();
+  }
+
+  get activeSortLabel() {
+    return this.activeSortOption;
   }
 
   async sortProductsBy(value: 'az' | 'za' | 'lohi' | 'hilo') {
     await this.sortDropdown.selectOption(value);
   }
 
-  getCartBadge() {
+  get cartBadge() {
     return this.page.getByTestId('shopping-cart-badge')
+  }
+
+  async navigateToProductDetails(productName: string) {
+    const card = this.getItemCard(productName);
+    await card.getByTestId('inventory-item-name').click();
   }
 
   async navigateToCart() {
@@ -44,8 +72,7 @@ export class InventoryPage {
     return pricesArr.map(price => parseFloat(price.replace('$', '')))
   }
 
-  async allItemsNames() {
-    const namesArr = await this.page.getByTestId('inventory-item-name').allTextContents()
-    return namesArr
+  allItemsNames() {
+    return this.page.getByTestId('inventory-item-name').allTextContents()
   }
 }

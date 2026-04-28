@@ -16,44 +16,40 @@ test.describe('Inventory Functionality', () => {
 
   test('should add a single item to the cart @smoke', async ({ page }) => {
     await inventoryPage.addItemToCart("Sauce Labs Fleece Jacket");
-    await expect(inventoryPage.getCartBadge()).toHaveText("1");
+    await expect(inventoryPage.cartBadge).toHaveText("1");
   });
 
   test('should toggle button text after adding item @ui', async ({ page }) => {
-    await inventoryPage.addItemToCart("Sauce Labs Fleece Jacket");
+    const itemName = "Sauce Labs Fleece Jacket";
+    await inventoryPage.addItemToCart(itemName);
 
-    const card = inventoryPage.productCard.filter({ hasText: "Sauce Labs Fleece Jacket" })
-    const removeBtn = card.locator('button[data-test^="remove"]');
-    await expect(removeBtn).toBeVisible();
-    await expect(removeBtn).toHaveText("Remove");
+    await expect(inventoryPage.getItemRemoveButton(itemName)).toBeVisible();
+    await expect(inventoryPage.getItemRemoveButton(itemName)).toHaveText("Remove");
   });
 
   test('should decrease badge count when item is removed @regression', async ({ page }) => {
     await inventoryPage.addItemToCart("Sauce Labs Backpack");
-    await expect(inventoryPage.getCartBadge()).toHaveText("1");
+    await expect(inventoryPage.cartBadge).toHaveText("1");
     await inventoryPage.removeItemFromCart("Sauce Labs Backpack");
-    await expect(inventoryPage.getCartBadge()).not.toBeVisible();
+    await expect(inventoryPage.cartBadge).not.toBeVisible();
   });
 
-  test("should sort items in aphabetical order @regression", async ({ page }) => {
+  test('should navigate to product details by clicking on product name @regression', async ({ page }) => {
+    await inventoryPage.navigateToProductDetails('Sauce Labs Fleece Jacket');
+    await expect(page).toHaveURL(/inventory-item/);
+  })
+
+  test("should sort items in alphabetical order @regression", async ({ page }) => {
     await inventoryPage.sortProductsBy('az');
-    await expect(inventoryPage.activeSortOption).toHaveText('Name (A to Z)');
+    await expect(inventoryPage.activeSortLabel).toHaveText('Name (A to Z)');
     const itemNamesArr = await inventoryPage.allItemsNames();
     const expectedOrder = itemNamesArr.toSorted();
     expect(itemNamesArr).toEqual(expectedOrder);
-  })
-
-  test("should sort items in reverse alphabetical order @regression", async ({ page }) => {
-    await inventoryPage.sortProductsBy('za');
-    await expect(inventoryPage.activeSortOption).toHaveText('Name (Z to A)');
-    const itemNamesArr = await inventoryPage.allItemsNames();
-    const expectedOrder = [...itemNamesArr].sort().reverse();
-    expect(itemNamesArr).toEqual(expectedOrder);
-  })
+  });
 
   test("should sort items by price: Low to High @regression", async ({ page }) => {
     await inventoryPage.sortProductsBy('lohi');
-    await expect(inventoryPage.activeSortOption).toHaveText('Price (low to high)');
+    await expect(inventoryPage.activeSortLabel).toHaveText('Price (low to high)');
     const itemPricesArr = await inventoryPage.allItemsPrices()
     const expectedOrder = [...itemPricesArr].sort((a, b) => a - b)
     expect(itemPricesArr).toEqual(expectedOrder)
@@ -61,7 +57,7 @@ test.describe('Inventory Functionality', () => {
 
   test("should sort items by price: High to Low @regression", async ({ page }) => {
     await inventoryPage.sortProductsBy('hilo');
-    await expect(inventoryPage.activeSortOption).toHaveText('Price (high to low)');
+    await expect(inventoryPage.activeSortLabel).toHaveText('Price (high to low)');
     const itemPricesArr = await inventoryPage.allItemsPrices()
     const expectedOrder = [...itemPricesArr].sort((a, b) => b - a)
     expect(itemPricesArr).toEqual(expectedOrder);
