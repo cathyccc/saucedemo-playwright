@@ -61,10 +61,10 @@ You can run the tests in different modes:
 - [x] **Product Interaction**: 
     - [x] Implemented Page Object Model (POM) for the Inventory page.
     - [x] Developed logic for adding/removing items and validating cart badge counts.
-- [ ] **Cart & Checkout Logic** (Current Focus):
+- [x] **Cart & Checkout Logic** (Current Focus):
     - [x] Complete POM for the Cart page.
     - [x] Verify item persistence (ensuring selected products appear correctly in the cart).
-    - [ ] Automate the "Checkout: Your Information" and "Overview" steps.
+    - [x] Automate the "Checkout: Your Information" and "Overview" steps.
 
 ### **Phase 2: Framework Maturity**
 - [ ] **Global Setup & Auth**: Implement session storage to reuse login state across tests for faster execution.
