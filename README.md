@@ -51,27 +51,28 @@ You can run the tests in different modes:
 
 ---
 
-## 🗺️ Roadmap & Progress
+## 🚀 Automated Test Coverage & Features
 
-### **Phase 1: Core Automation (In Progress)**
-- [x] **Project Scaffolding**: Initialized Playwright with TypeScript and organized directory structure.
-- [x] **Authentication Suite**: 
-    - [x] Functional tests for `standard_user` login.
-    - [x] Validation of error states for `locked_out_user`.
-- [x] **Product Interaction**: 
-    - [x] Implemented Page Object Model (POM) for the Inventory page.
-    - [x] Developed logic for adding/removing items and validating cart badge counts.
-- [x] **Cart & Checkout Logic** (Current Focus):
-    - [x] Complete POM for the Cart page.
-    - [x] Verify item persistence (ensuring selected products appear correctly in the cart).
-    - [x] Automate the "Checkout: Your Information" and "Overview" steps.
+### **Core Test Suites**
+- **Authentication**: 
+    - Full happy-path validation for `standard_user`.
+    - Robust error state testing for `locked_out_user` and invalid credentials.
+- **Inventory Management**: 
+    - Dynamic logic for adding/removing specific products by name.
+    - Real-time validation of cart badge counts and UI state toggles.
+- **Shopping Cart**: 
+    - Validation of item persistence from inventory to cart.
+    - Verified multi-item handling and list integrity.
+- **Checkout Flow**: 
+    - Automated the complete E2E journey: `Cart` ➔ `Information Entry` ➔ `Order Overview` ➔ `Finish`.
 
-### **Phase 2: Framework Maturity**
-- [ ] **Global Setup & Auth**: Implement session storage to reuse login state across tests for faster execution.
-- [ ] **Data-Driven Testing**: Externalize test data into JSON files to test different user personas.
-- [ ] **BasePage Abstraction**: Create a base class to handle common elements like the navigation menu and footer.
+### **Technical Implementation Highlights**
+- **Page Object Model (POM)**: Fully decoupled test logic from UI selectors for high maintainability.
+- **Financial Accuracy**: Implemented precision handling using `.toFixed(2)` and `toBeCloseTo` to validate subtotal and tax calculations against JavaScript's floating-point math.
+- **Atomic Test Design**: Every test is independent, ensuring reliability and allowing for easier debugging.
+- **Robust Locators**: Utilized `data-test` attributes and regex-based string parsing to ensure tests are resilient to minor UI text changes.
 
-### **Phase 3: CI/CD & Professional Reporting**
-- [ ] **GitHub Actions**: Configure a workflow to run tests automatically on every Push or Pull Request.
-- [ ] **Enhanced Reporting**: Integrate Playwright HTML reports and Trace Viewer for easier debugging.
-- [ ] **Cross-Browser Validation**: Run the full suite across Chromium, Firefox, and WebKit.
+## 🛠️ Tech Stack & Tools
+- **Playwright**: Core automation engine.
+- **TypeScript**: For type-safe test development and better IDE support.
+- **Node.js**: Runtime environment.
